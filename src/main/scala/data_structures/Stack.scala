@@ -27,17 +27,18 @@ class Stack[+A](h: A, t: AbstractStack[A]) extends AbstractStack[A] {
 
   def getLength: Int = {
     @tailrec
-    def rtLength[B >: A](l: AbstractStack[B], accumulator: Int): Int = {
+    def trLength[B >: A](l: AbstractStack[B], accumulator: Int): Int = {
       if (l == EmptyStack) accumulator
-      else rtLength(l.tail, accumulator + 1)
+      else trLength(l.tail, accumulator + 1)
     }
 
-    rtLength(this, 0)
+    trLength(this, 0)
   }
 
   def pop: (A, AbstractStack[A]) = {
-    return (head, tail)
+    (head, tail)
   }
+
 }
 
 object Stack {
