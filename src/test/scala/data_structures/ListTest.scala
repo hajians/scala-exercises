@@ -36,4 +36,34 @@ class ListTest extends FunSuite {
     assert(lAppended.tail.head === 20)
     assert(lAppended.tail.tail.head === 30)
   }
+
+  test("testMap") {
+    // Given
+    val l: List[Int] = new List[Int](h=1).append(20).append(30).append(-1)
+    val square: Int => Int = (x: Int) => x*x
+
+    // When
+    val lMapped = l.map(square)
+
+    // Then
+    assert(lMapped.head == 1)
+    assert(lMapped.tail.head == 400)
+    assert(lMapped.tail.tail.head == 900)
+    assert(lMapped.tail.tail.tail.head == 1)
+  }
+
+  test("testMapDifferentCoDomain") {
+    // Given
+    val l: List[String] = new List[String](h = "1").append("2").append("3").append("4")
+    val square: String => Int = (x: String) => x.toInt
+
+    // When
+    val lMapped = l.map(square)
+
+    // Then
+    assert(lMapped.head == 1)
+    assert(lMapped.tail.head == 2)
+    assert(lMapped.tail.tail.head == 3)
+    assert(lMapped.tail.tail.tail.head == 4)
+  }
 }

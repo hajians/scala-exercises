@@ -17,4 +17,15 @@ class List[+A](h: A, t: AbstractStack[A] = EmptyStack) extends Stack[A](h = h, t
 
     trInvert(this.tail, new List[A](this.head))
   }
+
+  def map[B](f: A => B): List[B] = {
+    @tailrec
+    def trMap(l: AbstractStack[A], accumulator: List[B]): List[B] = {
+      if (l==EmptyStack) accumulator
+      else trMap(l.tail, accumulator.push(f(l.head)))
+    }
+
+    trMap(this.tail, new List[B](f(this.head))).invert
+  }
+
 }
