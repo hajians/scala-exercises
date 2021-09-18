@@ -6,7 +6,7 @@ class ListTest extends FunSuite {
 
   test("testCovariant") {
     // Given
-    val l: List[Int] = new List[Int](h=1, new List[Int](h=20))
+    val l: List[Int] = new List[Int](h = 1, new List[Int](h = 20))
 
     // When, Then
     val lCovariant: List[Any] = new List[Any]("String", l)
@@ -39,8 +39,8 @@ class ListTest extends FunSuite {
 
   test("testMap") {
     // Given
-    val l: List[Int] = new List[Int](h=1).append(20).append(30).append(-1)
-    val square: Int => Int = (x: Int) => x*x
+    val l: List[Int] = new List[Int](h = 1).append(20).append(30).append(-1)
+    val square: Int => Int = (x: Int) => x * x
 
     // When
     val lMapped = l.map(square)
@@ -65,5 +65,20 @@ class ListTest extends FunSuite {
     assert(lMapped.tail.head == 2)
     assert(lMapped.tail.tail.head == 3)
     assert(lMapped.tail.tail.tail.head == 4)
+    assert(lMapped.getLength == 4)
+  }
+
+  test("testFilter") {
+    // Given
+    val mod2: Int => Boolean = (x: Int) => if ((x%2)==0) true else false
+    val l: List[Int] = new List[Int](2).append(3).append(4).append(5)
+
+    // When
+    val lFiltered: List[Int] = l.filter(mod2)
+
+    // Then
+    assert(lFiltered.head == 2)
+    assert(lFiltered.tail.head == 4)
+    assert(lFiltered.getLength == 2)
   }
 }

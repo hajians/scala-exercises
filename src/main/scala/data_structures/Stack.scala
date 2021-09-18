@@ -15,7 +15,7 @@ object EmptyStack extends AbstractStack[Nothing] {
 
   def tail: Nothing = ???
 
-  def push[B >: Nothing](n: B): AbstractStack[B] = ???
+  def push[B >: Nothing](n: B): AbstractStack[B] = Stack[B](h=n)
 }
 
 class Stack[+A](h: A, t: AbstractStack[A]) extends AbstractStack[A] {
