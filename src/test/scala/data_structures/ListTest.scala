@@ -70,7 +70,7 @@ class ListTest extends FunSuite {
 
   test("testFilter") {
     // Given
-    val mod2: Int => Boolean = (x: Int) => if ((x%2)==0) true else false
+    val mod2: Int => Boolean = (x: Int) => if ((x % 2) == 0) true else false
     val l: List[Int] = new List[Int](2).append(3).append(4).append(5)
 
     // When
@@ -81,4 +81,72 @@ class ListTest extends FunSuite {
     assert(lFiltered.tail.head == 4)
     assert(lFiltered.getLength == 2)
   }
+
+  test("testARange") {
+    // Given
+    val start = 3
+    val end = 10
+    val step = 2
+
+    // When
+    val r: List[Int] = List.aRange(start, end, step)
+
+    // Then
+    assert(r.getLength == 4)
+    assert(r.head == 3)
+    assert(r.tail.head == 5)
+    assert(r.tail.tail.head == 7)
+    assert(r.tail.tail.tail.head == 9)
+  }
+
+  test("testSlice") {
+    // Given
+    val l = new List[Int](1).append(3).append(5).append(2)
+
+    // When
+    val lSlice = l.slice(0, 2)
+
+    // Then
+    assert(lSlice.getLength == 2)
+    assert(lSlice.head == 1)
+    assert(lSlice.tail.head == 3)
+  }
+
+  test("testSliceTwo") {
+    // Given
+    val l = new List[Int](1).append(3).append(5).append(2)
+
+    // When
+    val lSlice = l.slice(3, 5)
+
+    // Then
+    assert(lSlice.getLength == 1)
+    assert(lSlice.head == 2)
+  }
+
+  test("testSliceThrowError") {
+    // Given
+    val l = new List[Int](1).append(3).append(5).append(2)
+
+    // When, Then
+    val output = try {
+      l.slice(4, 5)
+    } catch {
+      case e: RuntimeException => 1
+    }
+
+    assert(output == 1)
+  }
+
+  test("testGetElement") {
+    // Given
+    val l = new List[Int](1).append(3).append(5).append(2)
+
+    // When, Then
+    // Then
+    assert(l.getElement(pos = 0) == 1)
+    assert(l.getElement(pos = 1) == 3)
+    assert(l.getElement(pos = -1) == 2)
+  }
+
 }

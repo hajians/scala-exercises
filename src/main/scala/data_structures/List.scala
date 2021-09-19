@@ -38,6 +38,26 @@ class List[+A](h: A, t: AbstractStack[A] = EmptyStack) extends Stack[A](h = h, t
 
     List.convertStackToList(trFilter(f, this, EmptyStack)).invert
   }
+
+  def slice(start: Int, end: Int): List[A] = {
+    @tailrec
+    def trSlice(index: Int, start: Int, end: Int, l: AbstractStack[A], accumulator: AbstractStack[A]): AbstractStack[A] = {
+      if (start >= end) EmptyStack
+      else if (l == EmptyStack) accumulator
+      else if (index >= end) accumulator
+      else if (index < start) trSlice(index + 1, start, end, l.tail, accumulator)
+      else trSlice(index + 1, start, end, l.tail, accumulator.push(l.head))
+    }
+
+    val stack: AbstractStack[A] = trSlice(0, start, end, this, EmptyStack)
+    if (stack == EmptyStack) throw new RuntimeException("Could not slice the list")
+    else List.convertStackToList(stack).invert
+  }
+
+  def getElement(pos: Int): A = {
+    if (pos >= 0) slice(start = pos, end = pos + 1).head
+    else slice(start = this.getLength + pos, end = this.getLength + pos + 1).head
+  }
 }
 
 object List {
@@ -49,5 +69,15 @@ object List {
     }
 
     trConvert(s.tail, new List[A](s.head)).invert
+  }
+
+  def aRange(start: Int, stop: Int, step: Int = 1): List[Int] = {
+    @tailrec
+    def trRange(i: Int, stop: Int, step: Int, accumulator: List[Int]): List[Int] = {
+      if (i >= stop) accumulator
+      else trRange(i + step, stop, step, accumulator.push(i))
+    }
+
+    trRange(i = start + step, stop = stop, step = step, new List[Int](start)).invert
   }
 }
