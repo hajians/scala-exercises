@@ -149,4 +149,19 @@ class ListTest extends FunSuite {
     assert(l.getElement(pos = -1) == 2)
   }
 
+  test("testSort") {
+    // Given
+    val l = new List[Int](1).append(3).append(5).append(2).append(3)
+    val comparison = (a: Int, b: Int) => a > b
+    // When
+    val lSorted = l.sort(comparison)
+
+    // Then
+    assert(lSorted.getElement(0) == 1)
+    assert(lSorted.getElement(1) == 2)
+    assert(lSorted.getElement(2) == 3)
+    assert(lSorted.getElement(3) == 3)
+    assert(lSorted.getElement(4) == 5)
+  }
+
 }

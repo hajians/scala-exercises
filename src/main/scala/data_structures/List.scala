@@ -8,7 +8,7 @@ class List[+A](h: A, t: AbstractStack[A] = EmptyStack) extends Stack[A](h = h, t
 
   def append[B >: A](n: B): List[B] = this.invert.push(n).invert
 
-  def invert: List[A] = {
+  override def invert: List[A] = {
     @tailrec
     def trInvert(l: AbstractStack[A], accumulator: List[A]): List[A] = {
       if (l == EmptyStack) accumulator
@@ -57,6 +57,22 @@ class List[+A](h: A, t: AbstractStack[A] = EmptyStack) extends Stack[A](h = h, t
   def getElement(pos: Int): A = {
     if (pos >= 0) slice(start = pos, end = pos + 1).head
     else slice(start = this.getLength + pos, end = this.getLength + pos + 1).head
+  }
+
+  def foreach(f: A => Unit): Unit = {
+    @tailrec
+    def trForeach(l: AbstractStack[A], f: A => Unit): Unit = {
+      if (l != EmptyStack) {
+        f(l.head)
+        trForeach(l.tail, f)
+      }
+    }
+
+    trForeach(this, f)
+  }
+
+  def sort(compare: (A, A) => Boolean): List[A] = {
+    List.convertStackToList(Stack.sort(this, compare))
   }
 }
 
