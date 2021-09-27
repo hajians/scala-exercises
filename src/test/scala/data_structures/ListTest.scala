@@ -164,4 +164,64 @@ class ListTest extends FunSuite {
     assert(lSorted.getElement(4) == 5)
   }
 
+  test("testAdd") {
+    // Given
+    val l = new List[Int](1).append(2)
+    val r = new List[Int](3)
+
+    // When
+    val o = l + r
+
+    // Then
+    assert(o.getLength == 3)
+    assert(o.getElement(0) == 1)
+    assert(o.getElement(1) == 2)
+    assert(o.getElement(2) == 3)
+  }
+
+  test("testAddCovariant") {
+    // Given
+    val l = new List[Int](1).append(2)
+    val r = new List[String]("A string")
+
+    // When
+    val o: List[Any] = l + r
+
+    // Then
+    assert(o.getLength == 3)
+    assert(o.getElement(0) == 1)
+    assert(o.getElement(1) == 2)
+    assert(o.getElement(2) == "A string")
+  }
+
+  test("testFlatMap") {
+    // Given
+    val l = new List[Int](1).append(2)
+    val f = (x: Int) => new List[Any](x.toString).append(x * 2)
+
+    // When
+    val o: List[Any] = l.flatMap(f)
+
+    // Then
+    assert(o.getLength == 4)
+    assert(o.getElement(0) == "1")
+    assert(o.getElement(1) == 2)
+    assert(o.getElement(2) == "2")
+    assert(o.getElement(3) == 4)
+  }
+
+  test("testComprehension") {
+    // Given
+    val l = new List[Int](1).append(2).append(10).append(20)
+
+    // When
+    val o: List[String] = for (x <- l; y <- l) yield s"($x,$y)"
+
+    // Then
+    assert(o.getLength == 16)
+    assert(o.getElement(0) == "(1,1)")
+    assert(o.getElement(15) == "(20,20)")
+  }
+
+
 }

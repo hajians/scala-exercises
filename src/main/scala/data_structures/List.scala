@@ -8,6 +8,16 @@ class List[+A](h: A, t: AbstractStack[A] = EmptyStack) extends Stack[A](h = h, t
 
   def append[B >: A](n: B): List[B] = this.invert.push(n).invert
 
+  def +[B>:A](that: AbstractStack[B]): List[B] = {
+    @tailrec
+    def trPlus(that: AbstractStack[B], accumulator: List[B]): List[B] = {
+      if (that == EmptyStack) accumulator
+      else trPlus(that.tail, accumulator.append(that.head))
+    }
+
+    trPlus(that, this)
+  }
+
   override def invert: List[A] = {
     @tailrec
     def trInvert(l: AbstractStack[A], accumulator: List[A]): List[A] = {
@@ -16,6 +26,15 @@ class List[+A](h: A, t: AbstractStack[A] = EmptyStack) extends Stack[A](h = h, t
     }
 
     trInvert(this.tail, new List[A](this.head))
+  }
+
+  def flatMap[B](f: A => List[B]): List[B] = {
+    @tailrec
+    def trFlatMap(f: A => List[B], l: AbstractStack[A], accumulator: List[B]): List[B] = {
+      if (l == EmptyStack) accumulator
+      else trFlatMap(f, l.tail, accumulator + f(l.head))
+    }
+    trFlatMap(f=f, this.tail, f(this.head))
   }
 
   def map[B](f: A => B): List[B] = {
